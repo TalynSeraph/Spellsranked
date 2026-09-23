@@ -40,3 +40,16 @@ The app needs internet access to retrieve SRD spell data from the public 5e API.
 The ranking is deliberately described as **community-informed**, not "official" or statistically proven consensus. Public guides and community discussions repeatedly emphasise different things: combat impact, concentration cost, versatility, action economy, ritual casting, party composition and campaign context. Sources consulted while designing the baseline include RPGBOT, Treantmonk's material, Tabletop Builds and community discussions.
 
 The same spell can move dramatically depending on class, subclass, level, party composition and campaign. Treat the ordering as a quick decision aid, not a definitive power ranking.
+
+
+### App icon
+
+The app includes the custom Spell Lore grimoire icon in `assets/`. The 192px version is used in the header, the 192px and 512px versions are used by the PWA manifest, and the smaller versions are used for browser favicons.
+
+To publish the updated icon, upload the whole repository including the `assets` folder. GitHub Pages will serve the icons automatically. On Android, open the published site in Chrome and use **Add to Home screen / Install app**; the 512px PWA icon will be used where supported. If an older installed version still shows the previous icon, uninstall the old shortcut/app and install it again after the new GitHub Pages deployment has refreshed.
+
+
+### SRD loading
+The app loads the 2014 SRD spell dataset as one static JSON file from the 5e-bits `5e-database` repository, then caches a local copy in the browser. This avoids the public API request-per-spell pattern that can trigger HTTP 429 rate limits. If the static dataset is unavailable, the app attempts the API as a fallback.
+
+The SRD is published by Wizards of the Coast under CC-BY-4.0; see the official SRD page: https://www.dndbeyond.com/srd.
