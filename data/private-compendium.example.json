@@ -1,0 +1,17 @@
+{
+  "spells": [
+    {
+      "name": "YOUR SPELL NAME",
+      "level": 1,
+      "school": "YOUR SCHOOL",
+      "classes": [
+        "wizard"
+      ],
+      "casting_time": "1 action",
+      "range": "60 feet",
+      "ritual": false,
+      "concentration": false,
+      "desc": "Paste or enter your own legally obtained spell description here for personal use."
+    }
+  ]
+}
