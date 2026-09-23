@@ -1,3 +1,4 @@
+const STATIC_SRD = "https://raw.githubusercontent.com/5e-bits/5e-database/main/src/2014/en/5e-SRD-Spells.json";
 const API = "https://www.dnd5eapi.co/api/2014";
 const CLASS_INFO = {
  barbarian:["Barbarian","A fierce martial class; no standard spell list in 2014 rules."],
@@ -115,9 +116,44 @@ function render(){
 }
 
 async function fetchJson(url){
-  const r=await fetch(url); if(!r.ok) throw new Error(`HTTP ${r.status}`);
+  const r=await fetch(url,{cache:"no-store"});
+  if(!r.ok) throw new Error(`HTTP ${r.status}`);
   return r.json();
 }
+
+function normaliseSpell(s){
+  return {
+    index:s.index,
+    name:s.name,
+    level:Number(s.level||0),
+    school:s.school?.name||s.school||"",
+    desc:Array.isArray(s.desc)?s.desc.join("\n\n"):(s.desc||""),
+    ritual:!!s.ritual,
+    concentration:!!s.concentration || String(s.duration||"").toLowerCase().includes("concentration"),
+    casting_time:s.casting_time||"",
+    range:s.range||"",
+    duration:s.duration||"",
+    components:s.components||[],
+    material:s.material||"",
+    classes:(s.classes||[]).map(c=>typeof c==="string"?c:c.index||c.name).filter(Boolean)
+  };
+}
+
+async function loadSrdDataset(){
+  const cached=localStorage.getItem("spellLoreSrdCache");
+  if(cached){
+    try{
+      const parsed=JSON.parse(cached);
+      if(Array.isArray(parsed) && parsed.length) return parsed;
+    }catch{}
+  }
+  const data=await fetchJson(STATIC_SRD);
+  if(!Array.isArray(data)) throw new Error("Invalid SRD dataset");
+  const normal=data.map(normaliseSpell);
+  localStorage.setItem("spellLoreSrdCache",JSON.stringify(normal));
+  return normal;
+}
+
 async function loadClass(cls){
   selectedClass=cls;
   $("#setup").classList.add("hidden"); $("#book").classList.remove("hidden");
@@ -125,19 +161,31 @@ async function loadClass(cls){
   $("#classBlurb").textContent=CLASS_INFO[cls]?.[1]||"";
   $("#status").textContent="Opening the grimoire…";
   try{
-    const list=await fetchJson(`${API}/classes/${cls}/spells`);
-    const results=list.results||[];
-    const details=await Promise.all(results.map(x=>fetchJson(`${API}/spells/${x.index}`)));
-    spells=details.map(s=>({
-      name:s.name, level:s.level, school:s.school?.name||"",
-      desc:(s.desc||[]).join("\n\n"), ritual:!!s.ritual, concentration:(s.duration||"").toLowerCase().includes("concentration"),
-      casting_time:s.casting_time, range:s.range, classes:[cls]
-    })).map(s=>({...s,_score:scoreSpell(s)}));
+    // Use one static SRD dataset instead of one API request per spell.
+    // This avoids public API rate limits such as HTTP 429 and also makes repeat visits fast.
+    const dataset=await loadSrdDataset();
+    spells=dataset.filter(s=>s.classes.map(c=>String(c).toLowerCase()).includes(cls.toLowerCase()))
+      .map(s=>({...s,classes:[cls],source:"SRD",_score:scoreSpell(s)}));
     localStorage.setItem("spellLoreClass",cls);
     render();
+    $("#status").textContent=`${spells.length} SRD spells • ordered by community-informed usefulness`;
   }catch(e){
-    $("#spellList").innerHTML=`<div class="panel"><strong>The scribe could not reach the public SRD index.</strong><p>Check your connection and reload. The app intentionally does not bundle non-SRD book text.</p><small>${esc(e.message)}</small></div>`;
-    $("#status").textContent="Offline / API unavailable";
+    // If GitHub Raw is temporarily unavailable, try the API once as a fallback.
+    try{
+      const list=await fetchJson(`${API}/classes/${cls}/spells`);
+      const results=list.results||[];
+      const details=[];
+      for(const x of results){
+        try{ details.push(await fetchJson(`${API}/spells/${x.index}`)); }
+        catch(err){ if(String(err.message).includes("429")){ throw err; } }
+      }
+      spells=details.map(s=>({...normaliseSpell(s),classes:[cls],source:"SRD",_score:scoreSpell(s)}));
+      render();
+      $("#status").textContent=`${spells.length} SRD spells • API fallback`;
+    }catch(fallbackErr){
+      $("#spellList").innerHTML=`<div class="panel"><strong>The scribe could not load the SRD spellbook.</strong><p>The public spell API is rate-limiting requests (HTTP 429), and the static SRD copy could not be reached. Check your connection and reload.</p><small>${esc(fallbackErr.message||e.message)}</small></div>`;
+      $("#status").textContent="SRD unavailable";
+    }
   }
 }
 function loadCustom(){
