@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root{
+  --ink:#2b1b12; --muted:#765f4b; --paper:#ead8b7; --paper2:#f4e7ca;
+  --edge:#9b754c; --gold:#b88935; --dark:#24160e; --shadow:rgba(36,22,14,.25);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0; color:var(--ink);
+ font-family:"IM Fell English",Georgia,serif;
+ background:
+   radial-gradient(circle at 20% 10%,rgba(255,255,255,.18),transparent 25%),
+   radial-gradient(circle at 80% 80%,rgba(77,43,19,.12),transparent 28%),
+   #d7bd91;
+ background-image:
+   linear-gradient(rgba(80,50,20,.035) 1px,transparent 1px),
+   linear-gradient(90deg,rgba(80,50,20,.025) 1px,transparent 1px);
+ background-size:24px 24px;
+}
+button,select,input{font:inherit}
+.app-shell{max-width:860px;margin:auto;min-height:100vh;padding-bottom:30px}
+.masthead{
+ display:flex;align-items:center;gap:12px;padding:18px 16px 12px;
+ position:sticky;top:0;z-index:5;
+ background:rgba(36,22,14,.96);color:#f2dfb7;box-shadow:0 3px 16px var(--shadow)
+}
+.masthead h1{font-family:Cinzel,serif;font-size:1.5rem;margin:0;letter-spacing:.04em}
+.subtitle{margin:2px 0 0;font-size:.9rem;color:#d9c08e;font-style:italic}
+.sigil{font-size:2rem;color:#d0a24c}.icon-btn{margin-left:auto;border:0;background:transparent;color:#f4e7ca;font-size:1.5rem}
+main{padding:14px}
+.panel,.spell-card{
+ background:linear-gradient(135deg,rgba(244,231,202,.96),rgba(226,205,166,.96));
+ border:1px solid var(--edge);
+ box-shadow:0 7px 20px var(--shadow), inset 0 0 35px rgba(102,67,30,.08);
+ border-radius:8px;
+}
+.panel{padding:20px}
+.ornament{text-align:center;font-size:2rem;color:var(--gold)}
+h2,h3{font-family:Cinzel,serif}
+h2{font-size:1.55rem;margin:.35rem 0 .6rem}
+label{display:block;font-weight:bold;margin:.9rem 0 .4rem}
+select,input{
+ width:100%;padding:12px 13px;border:1px solid #9c7c54;border-radius:6px;
+ background:#f7ebd1;color:var(--ink);outline:none
+}
+select:focus,input:focus{box-shadow:0 0 0 3px rgba(184,137,53,.2)}
+.muted,.small-note{color:var(--muted)}.small-note{font-size:.85rem;margin-top:.7rem}
+.hidden{display:none!important}
+.book-toolbar{display:flex;gap:8px;justify-content:space-between;margin-bottom:10px}
+.ghost-btn{
+ border:1px solid var(--edge);background:rgba(244,231,202,.72);color:var(--ink);
+ padding:8px 11px;border-radius:6px
+}
+.hero{display:flex;justify-content:space-between;align-items:center;padding:12px 4px 18px}
+.hero h2{font-size:1.7rem;margin:.1rem 0}
+.eyebrow{font-family:Cinzel,serif;font-size:.7rem;letter-spacing:.14em;color:var(--muted)}
+.wax{
+ width:58px;height:58px;border-radius:50%;display:grid;place-items:center;
+ background:#6f1d1b;color:#ead8b7;font-family:Cinzel,serif;font-size:.85rem;
+ box-shadow:inset 0 0 0 4px rgba(255,255,255,.08),0 4px 8px var(--shadow)
+}
+.compact{padding:12px;margin-bottom:12px}
+.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.status{padding:8px 4px;color:var(--muted);font-size:.9rem}
+.level-heading{
+ display:flex;align-items:center;gap:10px;margin:18px 2px 8px;
+ font-family:Cinzel,serif;color:#4e321f
+}
+.level-heading:after{content:"";height:1px;background:var(--edge);flex:1}
+.spell-card{margin:8px 0;overflow:hidden}
+.spell-head{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;padding:12px}
+.rank{
+ width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+ border:1px solid var(--gold);font-family:Cinzel,serif;font-weight:bold;background:#ead3a8
+}
+.spell-name{font-family:Cinzel,serif;font-weight:700;font-size:1.03rem}
+.badge{font-size:.7rem;border:1px solid #a98b63;border-radius:999px;padding:3px 7px;color:#5c412b}
+.chev{font-size:1.1rem;color:var(--muted)}
+.spell-body{border-top:1px solid rgba(126,94,57,.28);padding:12px 14px 14px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.tag{font-size:.72rem;background:#e1c99c;padding:3px 7px;border-radius:4px}
+.desc{line-height:1.45;font-size:.97rem}
+.reason{margin-top:9px;font-size:.83rem;color:#684c34;font-style:italic}
+.source{font-size:.72rem;color:#7b634a;margin-top:8px}
+details summary{list-style:none;cursor:pointer}
+details summary::-webkit-details-marker{display:none}
+footer{padding:22px 18px;color:#5e4937;font-size:.75rem;text-align:center;line-height:1.4}
+@media(min-width:700px){
+ main{padding:24px}.filter-row{grid-template-columns:1fr 1fr}
+ .spell-head{grid-template-columns:48px 1fr auto}.rank{width:38px;height:38px}
+}

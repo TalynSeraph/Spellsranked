@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#24160e">
+<meta name="description" content="Spell Lore — a mobile-first D&D 5e spell utility with community-informed rankings.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="assets/style.css">
+<title>Spell Lore — D&D 5e Spell Rankings</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="masthead">
+    <div class="sigil">✦</div>
+    <div>
+      <h1>Spell Lore</h1>
+      <p class="subtitle">A grimoire of useful magic</p>
+    </div>
+    <button id="themeBtn" class="icon-btn" aria-label="Toggle theme">☾</button>
+  </header>
+
+  <main>
+    <section id="setup" class="panel">
+      <div class="ornament">❧</div>
+      <h2>Choose your path</h2>
+      <p class="muted">Select a class to arrange its spells from most generally useful to most situational.</p>
+      <label for="classSelect">Class</label>
+      <select id="classSelect"></select>
+      <div class="small-note">2014 / 5e rules. Subclass spell lists can be added through the personal-compendium importer.</div>
+    </section>
+
+    <section id="book" class="hidden">
+      <div class="book-toolbar">
+        <button id="changeClass" class="ghost-btn">← Change class</button>
+        <button id="importBtn" class="ghost-btn">＋ My Compendium</button>
+      </div>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">THE GRIMOIRE OF</div>
+          <h2 id="classTitle"></h2>
+          <p id="classBlurb" class="muted"></p>
+        </div>
+        <div class="wax">5E</div>
+      </div>
+
+      <div class="controls panel compact">
+        <input id="search" type="search" placeholder="Search spells…" autocomplete="off">
+        <div class="filter-row">
+          <select id="levelFilter">
+            <option value="all">All levels</option>
+            <option value="0">Cantrips</option>
+            <option value="1">1st level</option><option value="2">2nd level</option>
+            <option value="3">3rd level</option><option value="4">4th level</option>
+            <option value="5">5th level</option><option value="6">6th level</option>
+            <option value="7">7th level</option><option value="8">8th level</option>
+            <option value="9">9th level</option>
+          </select>
+          <select id="sourceFilter">
+            <option value="all">All sources</option>
+            <option value="SRD">SRD 5.1</option>
+            <option value="Personal">My Compendium</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="status" class="status"></div>
+      <div id="spellList"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Spell Lore</strong> is an unofficial fan utility. D&D, Dungeons & Dragons and related marks belong to Wizards of the Coast.</p>
+    <p>SRD 5.1 material is used under the Creative Commons Attribution 4.0 International License. This app does not bundle non-SRD book text.</p>
+    <p>Community-informed ordering is an editorial aid, not an official rating. Spell value changes with level, build, party, campaign and DM.</p>
+  </footer>
+</div>
+
+<input id="fileInput" type="file" accept=".json,application/json" hidden>
+<script src="assets/app.js"></script>
+</body>
+</html>

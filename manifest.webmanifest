@@ -1,0 +1,9 @@
+{
+  "name": "Spell Lore \u2014 D&D 5e Spell Rankings",
+  "short_name": "Spell Lore",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#d7bd91",
+  "theme_color": "#24160e",
+  "icons": []
+}
